@@ -4,44 +4,95 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OneSafe Chat</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #f8f8f8;
+    }
+
+    /* Force iframe to take full screen */
+    iframe[src*="pylon"] {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      border: none !important;
+      z-index: 9999 !important;
+    }
+  </style>
 </head>
 <body>
-  <div>Loading chat latest...</div>
 
-  <script>
-    // Set required Pylon chat settings
-    window.pylon = {
-      chat_settings: {
-        app_id: "01bd60ec-8a03-45fe-a92d-aa651674a9a2",
-        email: "anon@onesafe.io",
-        name: "Anonymous User"
-      }
+<!-- Optional: fallback loading message -->
+<div style="text-align:center;padding-top:2rem;font-family:sans-serif;color:#666;">
+  Loading OneSafe Chat...
+</div>
+
+<!-- Load Pylon widget -->
+<script>
+  window.pylon = {
+    chat_settings: {
+      app_id: "01bd60ec-8a03-45fe-a92d-aa651674a9a2",
+      email: "chris@onesafe.io",
+      name: "Chris from OneSafe",
+      avatar_url: "https://www.gravatar.com/avatar?d=identicon"
+    }
+  };
+</script>
+
+<script>
+  (function(){
+    var e = window;
+    var t = document;
+    var n = function(){ n.e(arguments) };
+    n.q = [];
+    n.e = function(e){ n.q.push(e) };
+    e.Pylon = n;
+
+    var r = function(){
+      var s = t.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://widget.usepylon.com/widget/01bd60ec-8a03-45fe-a92d-aa651674a9a2";
+      var n = t.getElementsByTagName("script")[0];
+      n.parentNode.insertBefore(s, n);
     };
 
-    // Load the widget
-    (function(){
-      var e = window;
-      var t = document;
-      var n = function(){ n.e(arguments) };
-      n.q = [];
-      n.e = function(e){ n.q.push(e) };
-      e.Pylon = n;
+    if (t.readyState === "complete") r();
+    else e.addEventListener("load", r, false);
+  })();
+</script>
 
-      var r = function(){
-        var s = t.createElement("script");
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://widget.usepylon.com/widget/01bd60ec-8a03-45fe-a92d-aa651674a9a2";
-        var n = t.getElementsByTagName("script")[0];
-        n.parentNode.insertBefore(s, n);
-      };
-
-      if (t.readyState === "complete") {
-        r();
-      } else if (e.addEventListener) {
-        e.addEventListener("load", r, false);
+<!-- Run Pylon commands once the widget loads -->
+<script>
+  // Wait for the Pylon widget to fully initialize
+  function runWhenReady(fn) {
+    const interval = setInterval(() => {
+      if (typeof window.Pylon === 'function') {
+        clearInterval(interval);
+        fn();
       }
-    })();
-  </script>
+    }, 100);
+  }
+
+  runWhenReady(() => {
+    // Open the chat window programmatically
+    window.Pylon("show");
+
+    // Hide the floating chat bubble
+    window.Pylon("hideChatBubble");
+
+    // Optional: pre-fill message
+    // window.Pylon("showNewMessage", "Hi there! I need help with OneSafe.");
+
+    // Optional: log open
+    window.Pylon("onShow", () => console.log("Chat opened"));
+  });
+</script>
+
 </body>
 </html>
