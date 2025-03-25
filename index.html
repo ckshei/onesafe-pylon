@@ -13,7 +13,6 @@
       background: #f8f8f8;
     }
 
-    /* Force iframe to take full screen */
     iframe[src*="pylon"] {
       position: fixed !important;
       top: 0 !important;
@@ -27,19 +26,24 @@
 </head>
 <body>
 
-<!-- Optional: fallback loading message -->
 <div style="text-align:center;padding-top:2rem;font-family:sans-serif;color:#666;">
   Loading OneSafe Chat...
 </div>
 
-<!-- Load Pylon widget -->
+<!-- Load Telegram SDK -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <script>
+  const tg = window.Telegram.WebApp;
+  const user = tg?.initDataUnsafe?.user;
+
+  // Build Pylon settings dynamically from Telegram
   window.pylon = {
     chat_settings: {
       app_id: "01bd60ec-8a03-45fe-a92d-aa651674a9a2",
-      email: "chris@onesafe.io",
-      name: "Chris from OneSafe",
-      avatar_url: "https://www.gravatar.com/avatar?d=identicon"
+      email: `${user?.username || 'anon'}@telegram`, // fake email fallback
+      name: `${user?.first_name || ''} ${user?.last_name || ''}`.trim(),
+      avatar_url: `https://t.me/i/userpic/320/${user?.username}.jpg`
     }
   };
 </script>
@@ -67,9 +71,7 @@
   })();
 </script>
 
-<!-- Run Pylon commands once the widget loads -->
 <script>
-  // Wait for the Pylon widget to fully initialize
   function runWhenReady(fn) {
     const interval = setInterval(() => {
       if (typeof window.Pylon === 'function') {
@@ -80,17 +82,9 @@
   }
 
   runWhenReady(() => {
-    // Open the chat window programmatically
     window.Pylon("show");
-
-    // Hide the floating chat bubble
     window.Pylon("hideChatBubble");
-
-    // Optional: pre-fill message
-    // window.Pylon("showNewMessage", "Hi there! I need help with OneSafe.");
-
-    // Optional: log open
-    window.Pylon("onShow", () => console.log("Chat opened"));
+    window.Pylon("onShow", () => console.log("Chat opened from Telegram"));
   });
 </script>
 
