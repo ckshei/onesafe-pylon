@@ -4,52 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>OneSafe Chat</title>
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        font-family: sans-serif;
-        background-color: #f9f9f9;
-      }
-
-      .loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        font-size: 18px;
-        color: #555;
-      }
-    </style>
   </head>
   <body>
-    <div class="loading">Loading OneSafe Chat...</div>
+    <div>Loading chat now...</div>
 
-    <script>
-      window.pylon = {
-        chat_settings: {
-          app_id: "01bd60ec-8a03-45fe-a92d-aa651674a9a2",
-          email: "chris@onesafe.io",
-          name: "Chris from OneSafe",
-          avatar_url: "https://www.gravatar.com/avatar?d=identicon"
-        }
-      };
-    </script>
-
+    <!-- Load Pylon widget without user context -->
     <script>
       (function(){
-        var e = window, t = document, n = function(){ n.e(arguments) };
-        n.q = []; n.e = function(e){ n.q.push(e) }; e.Pylon = n;
+        var e = window;
+        var t = document;
+        var n = function(){ n.e(arguments) };
+        n.q = [];
+        n.e = function(e){ n.q.push(e) };
+        e.Pylon = n;
+
         var r = function(){
           var s = t.createElement("script");
-          s.type = "text/javascript";
-          s.async = true;
-          s.src = "https://widget.usepylon.com/widget/01bd60ec-8a03-45fe-a92d-aa651674a9a2";
+          s.setAttribute("type", "text/javascript");
+          s.setAttribute("async", true);
+          s.setAttribute("src", "https://widget.usepylon.com/widget/01bd60ec-8a03-45fe-a92d-aa651674a9a2");
           var n = t.getElementsByTagName("script")[0];
           n.parentNode.insertBefore(s, n);
         };
-        if (t.readyState === "complete") r();
-        else e.addEventListener("load", r, false);
+
+        if (t.readyState === "complete") {
+          r();
+        } else if (e.addEventListener) {
+          e.addEventListener("load", r, false);
+        }
       })();
     </script>
   </body>
