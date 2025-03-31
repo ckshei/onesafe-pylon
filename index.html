@@ -27,7 +27,7 @@
 <body>
 
 <div style="text-align:center;padding-top:2rem;font-family:sans-serif;color:#666;">
-  Loading OneSafe Chat...
+  Loading OneSafe Chat march 31st...
 </div>
 
 <!-- Load Telegram SDK -->
@@ -41,7 +41,7 @@
   window.pylon = {
     chat_settings: {
       app_id: "01bd60ec-8a03-45fe-a92d-aa651674a9a2",
-      email: `${user?.username || 'anon'}@telegram`, // fake email fallback
+      email: `${user?.username || 'anon'}@telegram.com`, // fake email fallback
       name: `${user?.first_name || ''} ${user?.last_name || ''}`.trim(),
       avatar_url: `https://t.me/i/userpic/320/${user?.username}.jpg`
     }
